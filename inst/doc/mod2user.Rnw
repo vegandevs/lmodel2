@@ -1,0 +1,750 @@
+% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+%\VignetteIndexEntry{Model II Regression User Guide}
+\documentclass[a4paper,10pt,reqno]{amsart}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[authoryear,round]{natbib}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{sidecap}
+\setlength{\captionindent}{0pt}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{alltt}
+\renewcommand{\floatpagefraction}{0.8}
+\usepackage{ae}
+
+\title{Model II regression user's guide, R edition}
+
+\author{Pierre Legendre}
+
+\address{D{\'e}partement de sciences biologiques, Universit{\'e} de
+Montr{\'e}al, C.P. 6128, succursale Centre-ville, Montreal,
+Quebec H3C 3J7, Canada}
+\email{Pierre.Legendre@umontreal.ca}
+
+\date{$ $Id$ $}
+
+\begin{document}
+
+\setkeys{Gin}{width=0.55\linewidth}
+\SweaveOpts{strip.white=true}
+<<echo=false>>=
+require(lmodel2)
+options(width=72)
+figset <- function() par(mar=c(4,4,1,1)+.1)
+options(SweaveHooks = list(fig = figset))
+@
+
+
+\maketitle
+
+\tableofcontents
+
+Function \texttt{lmodel2} computes model II simple linear regression
+using the following methods: major axis (MA), standard major axis
+(SMA), ordinary least squares (OLS), and ranged major axis
+(RMA). Information about these methods is available, for instance, in
+section 10.3.2 of \citet{Legendre-Legendre98} and in sections 14.13
+and 15.7 of \citet{SokalRohlf95}\footnote{In Sokal and Rohlf
+  (Biometry, 2nd edition, 1981: 551), the numerical result for MA
+  regression for the example data set is wrong. The mistake has been
+  corrected in the 1995 edition.}. Parametric 95\% confidence
+intervals are computed for the slope and intercept parameters. A
+permutation test is available to determine the significance of the
+slopes of MA, OLS and RMA and also for the correlation
+coefficient. This function represents an evolution of a
+\textsc{Fortran} program written in 2000 and 2001.
+
+Bartlett's three-group model II regression method, described by the
+above mentioned authors, is not computed by the program because it
+suffers several drawbacks. Its main handicap is that the regression
+lines are not the same depending on whether the grouping (into three
+groups) is made based on $x$ or $y$. The regression line is not
+guaranteed to pass through the centroid of the scatter of points and
+the slope estimator is not symmetric, i.e. the slope of the regression
+$y = f(x)$ is not the reciprocal of the slope of the regression $x =
+f(y)$.
+
+Model II regression should be used when the two variables in the
+regression equation are random, i.e. not controlled by the
+researcher. Model I regression using least squares underestimates the
+slope of the linear relationship between the variables when they both
+contain error; see example in chapter \ref{sec:exa4}
+(p. \pageref{sec:exa4}). Detailed recommendations follow.
+
+\section{Recommendations on the use of model II regression methods}
+
+Considering the results of simulation studies,
+\citet{Legendre-Legendre98} offer the following recommendations to
+ecologists who have to estimate the parameters of the functional
+linear relationships between variables that are random and measured
+with error (Table \ref{tab:recommend}).
+
+\begin{table}
+\label{tab:recommend}
+  \caption{Application of the model II regression methods. The numbers
+    in the left-hand column refer to the corresponding paragraphs in
+    the text.}
+\begin{Small}
+\begin{tabular}{lllc}
+\toprule
+Par.& Method &Conditions of application& Test possible\\
+\midrule
+1 &OLS &Error on $y \gg$ error on $x$ &Yes\\
+3 &MA& Distribution is bivariate normal & Yes \\
+& &Variables are in the same physical units or dimensionless \\
+& &Variance of error about the same for $x$ and $y$ \\
+
+4 & &
+Distribution is bivariate normal\\
+& &Error variance on each axis proportional to variance of\\
+& &corresponding variable \\
+
+4a & RMA &
+Check scatter diagram: no outlier & Yes\\
+4b &SMA& Correlation $r$ is significant& No\\
+5 &OLS& Distribution is not bivariate normal& Yes\\
+& &Relationship between $x$ and $y$ is linear\\
+6 &OLS& To compute forecasted (fitted) or predicted $y$ values& Yes\\
+& &(Regression equation and confidence intervals are irrelevant) \\
+7& MA& To compare observations to model predictions &Yes\\
+\bottomrule
+\end{tabular}
+\end{Small}
+\end{table}
+
+\begin{enumerate}
+\item If the magnitude of the random variation (i.e. the error
+  variance\footnote{Contrary to the sample variance, the error
+    variance on $x$ or $y$ cannot be estimated from the data. An
+    estimate can only be made from knowledge of the way the variables
+    were measured.}) on the response variable $y$ is much larger
+  (i.e. more than three times) than that on the explanatory variable
+  $x$, use OLS.  Otherwise, proceed as follows.
+\item Check whether the data are approximately bivariate normal,
+  either by looking at a scatter diagram or by performing a formal
+  test of significance. If not, attempt transformations to render them
+  bivariate normal. For data that are or can be made to be reasonably
+  bivariate normal, consider recommendations 3 and 4. If not, see
+  recommendation 5.
+\item For bivariate normal data, use major axis (MA) regression if
+  both variables are expressed in the same physical units
+  (untransformed variables that were originally measured in the same
+  units) or are dimensionless (e.g. log-transformed variables), if it
+  can reasonably be assumed that the error variances of the variables
+  are approximately equal.
+
+  When no information is available on the ratio of the error variances
+  and there is no reason to believe that it would differ from 1, MA
+  may be used provided that the results are interpreted with
+  caution. MA produces unbiased slope estimates and accurate
+  confidence intervals \citep{Jolicoeur90}.
+
+  MA may also be used with dimensionally heterogeneous variables when
+  the purpose of the analysis is (1) to compare the slopes of the
+  relationships between the same two variables measured under
+  different conditions (e.g. at two or more sampling sites), or (2) to
+  test the hypothesis that the major axis does not significantly
+  differ from a value given by hypothesis (e.g. the relationship $E =
+  b_1 m$ where, according to the famous equation of Einstein, $b_1 =
+  c^2$, $c$ being the speed of light in vacuum).
+
+\item For bivariate normal data, if MA cannot be used because the
+  variables are not expressed in the same physical units or the error
+  variances on the two axes differ, two alternative methods are
+  available to estimate the parameters of the functional linear
+  relationship if it can reasonably be assumed that the error variance
+  on each axis is proportional to the variance of the corresponding
+  variable, i.e. (the error variance of $y$ / the sample variance of
+  $y$) (the error variance of $x$ / the sample variance of $x$). This
+  condition is often met with counts (e.g. number of plants or
+  animals) or log-transformed data \citep{McArdle88}.
+
+\begin{enumerate}
+\item Ranged major axis regression (RMA) can be used. The method is
+  described below. Prior to RMA, one should check for the presence of
+  outliers, using a scatter diagram of the objects.
+\item Standard major axis regression (SMA) can be used. One should
+  first test the significance of the correlation coefficient ($r$) to
+  determine if the hypothesis of a relationship is supported.  No SMA
+  regression equation should be computed when this condition is not
+  met.
+
+  This remains a less-than-ideal solution since SMA slope estimates
+  cannot be tested for significance.  Confidence intervals should also
+  be used with caution: simulations have shown that, as the slope
+  departs from $\pm 1$, the SMA slope estimate is increasingly biased
+  and the confidence interval includes the true value less and less
+  often. Even when the slope is near $\pm 1$ (e.g. example \S
+  \ref{sec:exa5}), the confidence interval is too narrow if $n$ is
+  very small or if the correlation is weak.
+\end{enumerate}
+
+\item If the distribution is not bivariate normal and the data cannot
+  be transformed to satisfy that condition (e.g. if the distribution
+  possesses two or several modes), one should wonder whether the slope
+  of a regression line is really an adequate model to describe the
+  functional relationship between the two variables. Since the
+  distribution is not bivariate normal, there seems little reason to
+  apply models such as MA, SMA or RMA, which primarily describe the
+  first principal component of a bivariate normal distribution. So,
+  (1) if the relationship is linear, OLS is recommended to estimate
+  the parameters of the regression line. The significance of the slope
+  should be tested by permutation, however, because the distributional
+  assumptions of parametric testing are not satisfied. (2) If a
+  straight line is not an appropriate model, polynomial or nonlinear
+  regression should be considered.
+
+\item When the purpose of the study is not to estimate the parameters
+  of a functional relationship, but simply to forecast or predict
+  values of $y$ for given $x$'s, use OLS in all cases.  OLS is the
+  only method that minimizes the squared residuals in y. The OLS
+  regression line itself is meaningless. Do not use the standard error
+  and confidence bands, however, unless $x$ is known to be free of
+  error \citep[p. 545, Table 14.3]{SokalRohlf95}; this warning applies
+  in particular to the 95\% confidence intervals computed for OLS by
+  this program.
+\item Observations may be compared to the predictions of a
+  statistical or deterministic model (e.g. simulation model) in order
+  to assess the quality of the model. If the model contains random
+  variables measured with error, use MA for the comparison since
+  observations and model predictions should be in the same units.
+
+  If the model fits the data well, the slope is expected to be $1$ and
+  the intercept $0$. A slope that significantly differs from $1$
+  indicates a difference between observed and simulated values which
+  is proportional to the observed values. For relative-scale
+  variables, an intercept which significantly differs from $0$
+  suggests the existence of a systematic difference between
+  observations and simulations \citep{Mesple.ea96}.
+
+\item With all methods, the confidence intervals are large when n is
+  small; they become smaller as n goes up to about 60, after which
+  they change much more slowly. Model II regression should ideally be
+  applied to data sets containing 60 observations or more. Some of the
+  examples presented below have fewer observations; they are only
+  presented for illustration.
+\end{enumerate}
+
+\section{Ranged major axis regression}
+
+Ranged major axis regression (RMA) is described in
+\citep[511--512]{Legendre-Legendre98}. It is computed as follows:
+
+\begin{enumerate}
+\item Transform the $y$ and $x$ variables into $y'$ and $x'$,
+  respectively, whose range is 1. Two formulas are available for
+  ranging, depending on the nature of the variables:
+  \begin{itemize}
+  \item For variables whose variation is expressed relative to an
+    arbitrary zero (interval-scale variables, e.g. temperature in
+    $^{\circ}$C), the formula for ranging is:
+\begin{equation}
+\label{eq:range1}
+y'_i = \frac{y_i - y_{\min}}{y_{\max} - y_{\min}} \quad \text{or} \quad
+x'_i = \frac{x_i - x_{\min}}{x_{\max}-x_{\min}}
+\end{equation}
+
+\item For variables whose variation is expressed relative to a true
+  zero value (ratio-scale or relative-scale variables, e.g. species
+  abundances, or temperature expressed in $^{\circ}$K), the recommended
+  formula for ranging assumes a minimum value of $0$;
+  eq. \ref{eq:range1} reduces to:
+\begin{equation}
+y'_i = \frac{y_i}{y_{\max}} \quad \text{or} \quad
+x'_i = \frac{x_i}{x_{\max}}
+\end{equation}
+\end{itemize}
+\item Compute MA regression between the ranged variables $y'$ and
+  $x'$. Test the significance of the slope estimate by permutation if
+  needed.
+\item Back-transform the estimated slope, as well as its confidence
+  interval limits, to the original units by multiplying them by the
+  ratio of the ranges:
+\begin{equation}
+b_1 = b'_1 \frac{y_{\max} - y_{\min}}{x_{\max} - x_{\min}}
+\end{equation}
+
+\item Recompute the intercept $b_0$ and its confidence interval
+  limits, using the original centroid ($\bar x$, $\bar y$) of the
+  scatter of points and the estimates of the slope $b_1$ and its
+  confidence limits:
+\begin{equation}
+b_0= \bar y - b_1 \bar x
+\end{equation}
+\end{enumerate}
+
+The RMA slope estimator has several desirable properties when the
+variables $x$ and $y$ are not expressed in the same units or when the
+error variances on the two axes differ.  (1) The slope estimator
+scales proportionally to the units of the two variables: the position
+of the regression line in the scatter of points remains the same
+irrespective of any linear change of scale of the variables. (2) The
+estimator is sensitive to the covariance of the variables; this is not
+the case for SMA. (3) Finally, and contrary to SMA, it is possible to
+test the hypothesis that an RMA slope estimate is equal to a stated
+value, in particular 0 or 1. As in MA, the test may be done either by
+permutation, or by comparing the confidence interval of the slope to
+the hypothetical value of interest. Thus, whenever MA regression
+cannot be used because of incommensurable units or because the error
+variances on the two axes differ, RMA regression can be used. There is
+no reason, however, to use RMA when MA is justified.
+
+Prior to RMA, one should check for the presence of outliers, using a
+scatter diagram of the objects. RMA should not be used in the presence
+of outliers because they cause important changes to the estimates of
+the ranges of the variables. Outliers that are not aligned fairly well
+with the dispersion ellipse of the objects may have an undesirable
+influence on the slope estimate. The identification and treatment of
+outliers is discussed in \citep[Section 13.4]{SokalRohlf95}. Outliers
+may, in some cases, be eliminated from the data set, or they may be
+subjected to a winsorizing procedure described by these authors.
+
+\section{Input file}
+
+A data frame with objects in rows and variables in columns.
+
+\section{Output file}
+
+The output file obtained by \texttt{print.lmodel2} contains the
+following results:
+
+\begin{enumerate}
+\item The call to the function.
+\item General regression statistics: number of objects ($n$),
+  correlation coefficient ($r$), coefficient of determination ($r^2$)
+  of the OLS regression, parametric $P$-values (2-tailed, one-tailed)
+  for the test of the correlation coefficient and the OLS slope, angle
+  between the two OLS regression lines, \texttt{lm(y \~\ x)} and
+  \texttt{lm(x \~\ y)}.
+\item A table with rows corresponding to the four regression
+  methods. Column 1 gives the method name, followed by the intercept
+  and slope estimates, the angle between the regression line and
+  the abscissa, and the permutational probability (one-tailed, for the
+  tail corresponding to the sign of the slope estimate).
+
+\item A table with rows corresponding to the four regression
+  methods. The method name is followed by the parametric 95\%
+  confidence intervals (2.5 and 97.5 percentiles) for the intercept
+  and slope estimates.
+\item The eigenvalues of the bivariate dispersion, computed during
+  major axis regression, and the $H$ statistic used for computing the
+  confidence interval of the major axis slope (notation following
+  \citealt{SokalRohlf95}).
+
+  For the slopes of MA, OLS and RMA, the permutation tests are carried
+  out using the slope estimates $b$ themselves as the reference
+  statistics. In OLS simple linear regression, a permutation test of
+  significance based on the $r$ statistic is equivalent to a
+  permutation test based on the pivotal $t$-statistic associated with
+  $b_{OLS}$ \citep[21]{Legendre-Legendre98}. On the other hand, across
+  the permutations, the slope estimate ($b_{OLS}$) differs from $r$ by a
+  constant ($s_y/s_x$) since $b_{OLS} = r_{xy} s_y/s_x$, so that $b_{OLS}$ and
+  $r$ are equivalent statistics for permutation testing. As a
+  consequence, a permutation test of $b_{OLS}$ is equivalent to a
+  permutation test carried out using the pivotal $t$-statistic
+  associated with $b_{OLS}$. This is not the case in multiple linear
+  regression, however, as shown by \citet{AnderLeg99}.
+\end{enumerate}
+
+If the objective is simply to assess the relationship between the two
+variables under study, one can simply compute the correlation
+coefficient r and test its significance. A parametric test can be used
+when the assumption of binormality can safely be assumed to hold, or a
+permutation test when it cannot.
+
+For the intercept of OLS, the confidence interval is computed using
+the standard formulas found in textbooks of statistics; results are
+identical to those of standard statistical software. No such formula,
+providing correct $\alpha$-coverage, is known for the other three
+methods. In the program, the confidence intervals for the intercepts
+of MA, SMA and RMA are computed by projecting the bounds of the
+confidence intervals of the slopes onto the ordinate; this results in
+an underestimation of these confidence intervals.
+
+\begin{figure}
+  \centering
+\resizebox{\linewidth}{!}{  
+  \begin{tikzpicture}
+    \draw[->, very thick] (0,0) -- (6,0);
+    \draw[<-, very thick]  (3,3) -- (3,-3);
+    \draw[->, very thick] (8,0) -- (14, 0);
+    \draw[->, very thick] (11,-3) -- (11,3);
+    \draw[->, thick] (6.8,-2) -- (8.6,-2);
+    \draw[<-, thick] (7.7,-1.1) -- (7.7,-2.8);
+    \draw[font=\footnotesize] (8.2,-1.6) node {I};
+    \draw[font=\footnotesize] (7.2,-1.6) node {II};
+    \draw[font=\footnotesize] (7.2,-2.4) node {III};
+    \draw[font=\footnotesize] (8.2,-2.4) node {IV};
+    \draw[dashed] (3,0) -- (3+3/2.75,3) node[above]{$b_{1 \inf} = 2.75$};
+    \draw (3,0) -- (3-3/2.75,-3) node[at start,sloped,above]{Lower bound
+    of CI};
+    \draw (3,0) -- (3+3/5.67,-3) node[midway,sloped,above]{MA
+      regression line} node[below]{$b_1 = -5.67$};
+    \draw (3,0) -- (3+2.7/1.19, -2.7) node[midway,sloped,above]{Upper
+      bound of CI} node[below]{$b_{1 \sup}=-1.19$};
+    \draw (11,0) -- (11-3/5.67,3);
+    \draw[dashed] (11,0) -- (11+3/5.67,-3)
+    node[at start,sloped,below]{Upper bound of CI} node[below]{$b_{1 \sup}
+      = -5.67$};
+    \draw (11,0) -- (11+3/2.75, 3) node[near end,sloped,above]{MA
+      regression line} node[right]{$b_1 = 2.75$};
+    \draw (11,0) -- (11+2/0.84, 2) node[near end,sloped,above]{Lower
+      bound of CI} node[right]{$b_{1 \inf} =0.84$};
+    \draw[font=\large] (0,3) node{(a)};
+    \draw[font=\large] (8,3) node{(b)};
+  \end{tikzpicture}
+}
+  \caption{(a) If a MA regression line has the lower bound of its
+    confidence interval (C.I.) in quadrant III, this bound has a
+    positive slope ($+2.75$ in example). (b) Likewise, if a MA
+    regression line has the upper bound of its confidence interval in
+    quadrant II, this bound has a negative slope ($-5.67$ in example).}
+  \label{fig:rma}
+\end{figure}
+In MA or RMA regression, the bounds of the confidence interval (C.I.)
+of the slope may, on occasions, lie outside quadrants I and IV of the
+plane centred on the centroid of the bivariate distribution. When the
+\emph{lower bound} of the confidence interval corresponds to a line in
+quadrant III (Fig. \ref{fig:rma}a), it has a positive slope; the RMA
+regression line of example in chapter \ref{sec:exa5}
+(p. \pageref{sec:exa5}) provides an example of this
+phenomenon. Likewise, when the \emph{upper bound} of the confidence
+interval corresponds to a line in quadrant II (Fig. \ref{fig:rma}b),
+it has a negative slope. In other instances, the confidence interval
+of the slope may occupy all 360$^{\circ}$ of the plane, which results
+in it having no bounds. The bounds are then noted 0.00000; see chapter
+\ref{sec:exa5} (p. \pageref{sec:exa5}).
+
+In SMA or OLS, confidence interval bounds cannot lie outside quadrants
+I and IV. In SMA, the regression line always lies at a $+45^{\circ}$
+or $-45^{\circ}$ angle in the space of the standardized variables; the
+SMA slope is a back-transformation of $\pm45^{\circ}$ to the units of
+the original variables. In OLS, the slope is always at an angle closer
+to zero than the major axis of the dispersion ellipse of the points,
+i.e. it always underestimates the MA slope in absolute value.
+
+
+\section{Examples}
+\subsection{Surgical unit data}
+\label{sec:exa1}
+
+\subsubsection{Input data}
+
+This example compares observations to the values forecasted by a
+model. A hospital surgical unit wanted to forecast survival of
+patients undergoing a particular type of liver surgery. Four
+explanatory variables were measured on patients. The response variable
+Y was survival time, which was $\log_{10}$-transformed. The data are
+described in detail in Section 8.2 of \citet{Neter.ea96} who also
+provide the original data sets. The data were divided in two groups of
+54 patients. The first group was used to construct forecasting models
+whereas the second group was reserved for model validation. Several
+regression models were studied. One of them, which uses variables $X_3 =$
+enzyme function test score and $X_4$ = liver function test score, is used
+as the basis for the present example. The multiple regression equation
+is the following:
+
+
+\begin{equation*}
+\hat Y = 1.388778 + 0.005653 X_3 + 0.139015 X_4
+\end{equation*}
+This equation was applied to the second data set (also 54 patients) to
+produce forecasted survival times. In the present example, these
+values are compared to the observed survival times. Fig. \ref{fig:ex1}
+shows the scatter diagram with $\log_{10}$(observed survival time) in
+abscissa and forecasted values in ordinate. The MA regression line is
+shown with its 95\% confidence region. The $45^{\circ}$ line, which
+would correspond to perfect forecasting, is also shown for comparison.
+
+\subsubsection{Output file}
+
+MA, SMA and OLS equations, 95\% C.I., and tests of significance, were
+obtained with the following R commands. The RMA method, which is
+optional, was not computed since MA is the only appropriate method in
+this example.
+
+<<>>=
+data(mod2ex1)
+Ex1.res <- lmodel2(Predicted_by_model ~ Survival, data=mod2ex1, nperm=99)
+Ex1.res
+@
+\begin{SCfigure}
+<<fig=true,echo=false,results=hide>>=
+plot(Ex1.res, centro = TRUE, xlab="log(observed survival time", ylab="Forecasted")
+abline(diff(mean(mod2ex1)), 1, lty=2)
+legend("topleft", c("MA regression", "Confidence limits", "45 degree line"), col=c("red", "grey", "black"), lty=c(1,1,2))
+@
+\caption{Scatter diagram of the 2.5 Example 1 data showing the major
+  axis (MA) regression line and its 95\% confidence region. The
+  45$^{\circ}$ line is drawn for reference. The cross indicates the
+  centroid of the bivariate distribution. The MA regression line
+  passes through this centroid.}
+\label{fig:ex1}
+\end{SCfigure}
+
+The interesting aspect of the MA regression equation in this example
+is that the regression line is not parallel to the 45$^{\circ}$ line
+drawn in Fig. \ref{fig:ex1}. The 45$^{\circ}$ line is not included in
+the 95\% confidence interval of the MA slope, which goes from
+$\tan^{-1}(0.62166) = 31.87$ to $\tan^{-1}(0.89456) = 41.81$. The
+Figure shows that the forecasting equation overestimated survival
+below the mean and underestimated it above the mean. The OLS
+regression line, which is often (erroneously) used by researchers for
+comparisons of this type, would show an even greater discrepancy
+(33.3$^{\circ}$ angle) from the 45$^{\circ}$ line, compared to the MA
+regression line (36.8$^{\circ}$ angle).
+
+\subsection{Eagle rays and \emph{Macomona} bivalves}
+\label{sec:exa2}
+
+\subsubsection{Input data}
+
+The following table presents observations at 20 sites from a study on
+predator-prey relationships \citep{Hines.ea97}. $y$ is the number of
+bivalves (\emph{Macomona liliana}) larger than 15 mm in size, found in
+0.25 m$^2$ quadrats of sediment; $x$ is the number of sediment
+disturbance pits of a predator, the eagle ray (\emph{Myliobatis
+  tenuicaudatus}), found within circles of a 15 m radius around the
+bivalve quadrats.
+
+
+The variables $x$ and $y$ are expressed in the same physical units and
+are estimated with sampling error, and their distribution is
+approximately bivariate normal. The error variance is not the same for
+$x$ and $y$ but, since the data are animal counts, it seems reasonable
+to assume that the error variance along each axis is proportional to
+the variance of the corresponding variable. The correlation is
+significant: $r = 0.86$, $p < 0.001$. RMA and SMA are thus appropriate
+for this data set; MA and OLS are not. Fig. \ref{fig:ex2} shows the
+scatter diagram.  The various regression lines are presented to allow
+their comparison.
+
+\subsubsection{Output file}
+
+MA, SMA, OLS and RMA regression equations, confidence intervals, and
+tests of significance, were obtained with the following R commands.
+That the 95\% confidence intervals of the SMA and RMA intercepts do
+not include 0 may be due to different reasons: (1) the relationship
+may not be perfectly linear; (2) the C.I. of the intercepts are
+underestimated; (3) the predators (eagle rays) may not be attracted to
+sampling locations containing few prey (bivalves).
+<<>>=
+data(mod2ex2)
+Ex2.res = lmodel2(Prey ~ Predators, data=mod2ex2, "relative","relative",99)
+Ex2.res
+@
+\begin{SCfigure}
+<<fig=true,echo=false>>=
+plot(Ex2.res, confid=FALSE, xlab="Eagle rays (predators)", ylab="Bivalves (prey)", main = "", centr=TRUE)
+lines(Ex2.res, "OLS", col=1, confid=FALSE)
+lines(Ex2.res, "SMA", col=3, confid=FALSE)
+lines(Ex2.res, "RMA", col=4, confid=FALSE)
+legend("topleft", c("OLS", "MA", "SMA", "RMA"), col=1:4, lty=1)
+@
+\caption{Scatter diagram of the Example 2 data (number of bivalves as
+  a function of the number of eagle rays) showing the major axis (MA),
+  standard major axis (SMA), ordinary 50 least-squares (OLS) and
+  ranged major axis (RMA) regression lines. SMA and RMA are the
+  appropriate regression lines in this example. The cross indicates
+  the centroid of the bivariate distribution. The four regression
+  lines pass through this centroid.  }
+\label{fig:ex2}
+\end{SCfigure}
+
+[1] In this table of the output file, the rows correspond,
+respectively, to the MA, OLS and RMA slopes and to the coefficient of
+correlation $r$ (\texttt{Corr}). \texttt{Stat.} is the value of the
+statistic being tested for significance. As explained in the
+\emph{Output file section}, the statistic actually used by the program
+for the test of the MA slope, in this example, is the inverse of the
+$b_{MA}$ slope estimate ($1/3.46591 = 0.28852$) because the reference
+value of the statistic in this permutation test must not exceed
+1. One-tailed probabilities (\texttt{One-tailed p}) are computed in
+the direction of the sign of the coefficient. For a one-tailed test in
+the upper tail (i.e. for a coefficient with a positive sign), $p =$ (EQ
++ GT)/(Number of permutations + 1). For a test in the lower tail
+(i.e. for a coefficient with a negative sign), $p =$ (LT + EQ)/(Number
+of permutations + 1), where
+\begin{itemize}
+\item LT is the number of values under permutation that are smaller
+  than the reference value;
+\item EQ is the number of values under permutation that are equal to
+  the reference value of the statistic, plus 1 for the reference value
+  itself;
+\item GT is the number of values under permutation that are greater
+  than the reference value.
+\end{itemize}
+
+\subsection{Cabezon spawning}%
+\label{sec:exa3}%
+\subsubsection{Input data}
+
+The following table presents data used by \citet[Box
+14.12]{SokalRohlf95} to illustrate model II regression analysis. They
+concern the mass ($x$) of unspawned females of a California fish, the
+cabezon (\emph{Scorpaenichthys marmoratus}), and the number of eggs
+they subsequently produced ($y$). One may be interested to estimate
+the functional equation relating the number of eggs to the mass of
+females before spawning. The physical units of the variables are as in
+the table published by \citet[546]{SokalRohlf95}.
+
+Since the variables are in different physical units and are estimated
+with error, and their distribution is approximately bivariate normal,
+RMA and SMA are appropriate for this example; MA is inappropriate. The
+OLS regression line is meaningless; in model II regression, OLS should
+only be used for forecasting or prediction. It is plotted in
+Fig. \ref{fig:ex3} only to allow comparison.
+
+The RMA and SMA regression lines are nearly indistinguishable in this
+example. The slope of RMA can be tested for significance ($H0$:
+$b_{RMA} = 0$), however, whereas the SMA slope cannot. The 95\%
+confidence intervals of the intercepts of RMA and SMA, although
+underestimated, include the value 0, as expected if a linear model
+applies to the data: a female with a mass of 0 is expected to produce
+no egg.
+
+Another interesting property of RMA and SMA is that their estimates of
+slope and intercept change proportionally to changes in the units of
+measurement. One can easily verify that by changing the decimal places
+in the Example 2 data file and recomputing the regression
+equations. RMA and SMA share this property with OLS. MA regression
+does not have this property; this is why it should only be used with
+variables that are in the same physical units, as those of Example 1.
+
+\subsubsection{Output file}
+
+MA, SMA, OLS and RMA equations, 95\% C.I., and tests of significance, were
+obtained with the following R commands:
+<<>>=
+data(mod2ex3)
+Ex3.res = lmodel2(No_eggs ~ Mass, data=mod2ex3, "relative", "relative", 99)
+Ex3.res
+@
+\begin{SCfigure}
+<<fig=true,echo=false>>=
+plot(Ex3.res, method="OLS", conf = FALSE, centroid=TRUE, main="", xlab = "Fish mass (x100 g)", ylab = "No. of eggs", col=1)
+lines(Ex3.res, "SMA", col=2, conf = FALSE)
+lines(Ex3.res, "RMA", col=3, conf = FALSE)
+legend("topleft", c("OLS", "SMA", "RMA"), col=1:3, lty=1)
+@
+\caption{Scatter diagram of the Example 3 data (number of eggs
+  produced as a function of the mass of unspawned females) with the
+  ranged major axis (RMA), standard major axis (SMA) and ordinary
+  least-squares (OLS) regression lines. RMA and SMA are the
+  appropriate regression lines in this example. The cross indicates
+  the centroid of the bivariate distribution. The three regression
+  lines pass through this centroid.}
+\label{fig:ex3}
+\end{SCfigure}
+
+\subsection{Highly correlated random variables}
+\label{sec:exa4}
+
+\subsubsection{Input data}
+
+\citet{Mesple.ea96} generated a variable $X$ containing 100 values
+drawn at random from a uniform distribution in the interval $[0,
+10]$. They then generated two other variables, $N_1$ and $N_2$,
+containing values drawn at random from a normal distribution
+$\mathcal{N}(0, 1)$. These variables were combined to create two new
+variables $x = (X + N_1)$ and $y = (X + N_2)$. The relationship
+constructed in this way between $x$ and $y$ is perfect and should have
+a slope of 1, despite the fact that there is normal error added
+independently to $x$ and $y$.
+
+\subsubsection{Output file}
+
+The various model II regression methods were applied to this data set
+with the following results, were obtained with the following R
+commands:
+<<>>=
+data(mod2ex4)
+Ex4.res = lmodel2(y ~ x, data=mod2ex4, "interval", "interval", 99)
+Ex4.res
+@
+
+The noticeable aspect is that with OLS regression, the confidence
+interval of the slope does not include the value 1 and the confidence
+interval of the intercept does not include the value 0. The OLS slope
+underestimates the real slope of the bivariate functional
+relationship, which is 1 by construct in this example. This
+illustrates the fact that OLS, considered as model I regression
+method, is inadequate to estimate the slope of the functional
+relationship between these variables. As a model II regression method,
+OLS would only be appropriate to predict the values $\hat{y}$ from $x$
+(point 6 in Table \ref{tab:recommend}).
+
+With all the other model II regression methods, the confidence
+intervals of the slopes include the value 1 and the confidence
+intervals of the intercepts include the value 0, as expected for this
+data set because of the way the data were generated.
+
+\subsection{Uncorrelated random variables}
+\label{sec:exa5}
+
+\subsubsection{Input data}
+
+Two vectors of 100 random data drawn from a normal distribution
+$\mathcal{N}(0, 1)$ were generated. One expects to find a null
+correlation with this type of data which were submitted to the model
+II regression program.
+
+\subsubsection{Output file}
+
+MA, SMA, OLS and RMA equations, 95\% C.I., and tests of significance,
+were obtained with the following R commands. Fig. \ref{fig:ex5} shows
+the scatter diagram. The various regression lines are presented to
+allow their comparison.
+
+<<>>=
+data(mod2ex5)
+Ex5.res <- lmodel2(random_y ~ random_x, data=mod2ex5,"interval","interval",99)
+Ex5.res
+@
+\begin{SCfigure}
+<<fig=true,echo=false>>=
+plot(Ex5.res, conf = FALSE, main = "", centro = TRUE)
+lines(Ex5.res, "OLS", conf=F, col=1)
+lines(Ex5.res, "RMA", conf=F, col=4)
+lines(Ex5.res, "SMA", conf=F, col=3)
+legend("topright", c("OLS","MA","SMA", "RMA"), col=1:4, lty=1)
+@
+\caption{ Scatter diagram of the Example 5 data (random numbers)
+  showing the major axis (MA), standard major axis (SMA), ordinary
+  least-squares (OLS) and ranged major axis (RMA OLS regression
+  lines. The correlation coefficient is not significantly different
+  from zero. The cross indicates the centroid of the bivariate
+  distribution.  The four regression lines pass through this
+  centroid.}
+\label{fig:ex5}
+\end{SCfigure}
+Neither the correlation nor any of the regression coefficients are
+significant; this is as expected from the way the data were
+generated. Note that the slope estimates differ widely among
+methods. The MA slope is $b_{MA} = -0.60005$ but its confidence
+interval, noted \texttt{NA} for `Not available' or `Missing value',
+covers all 360$^{\circ}$ of the plane, as stated in the comment above
+the regression table. The RMA slope estimate is $b_{RMA} =
+-2.53297$. OLS, which should only be used to predict the values $\hat
+y$ from $x$ (point 6 in Table 1), tends to produce slopes near zero
+for random data: $b_{OLS} = 0.08011$.
+
+Since the correlation is not significant, SMA should not have been
+computed. This method tends to produce slopes near $\pm1$; with the
+present example, the slope is indeed near $\pm1$ ($b_{SMA} = 0.95633$)
+since the standard deviations of the two variables are nearly equal
+($s_x = 1.01103$, $s_y = 0.96688$). This example shows that RMA does
+not necessarily produce results that are similar to SMA.
+
+The confidence intervals of the slope and intercept of RMA provide an
+example of the phenomenon of inversion of the confidence limits
+described in Fig. \ref{fig:rma}.
+
+\bibliographystyle{plainnat}
+\bibliography{vegan}
+
+\end{document}

@@ -1,6 +1,6 @@
 `lmodel2` <-
 function(formula, data = NULL, range.y = NULL, range.x = NULL,
-             nperm = 0, control = permControl(nperm = nperm))
+             nperm = 0)
 ###
 ### Bivariate model II regression.
 ### Regression methods: OLS, MA, SMA, RMA
@@ -200,7 +200,7 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
     if((nperm > 0) & (rsquare > epsilon)) {
         require(vegan) || stop("requires package 'vegan'")
         res8 <- permutest.lmodel2(yx, yx.2, b.ols, b.ma, b.rma/ratio,
-                          RMA, ratio, nperm, epsilon, control = control)
+                          RMA, ratio, nperm, epsilon)
     }
     
     ## Output results
@@ -468,9 +468,10 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
     CL <- c(b0inf, b0sup, b1inf, b1sup)
 }
 
+## vegan defines generic permutest, but if we don't depend on vegan we
+## need to use another name
 `permutest.lmodel2` <-
-    function(x, yx.2, b.ols, b.ma, b.rma, RMA, ratio, nperm, epsilon,
-             control, ...)
+    function(x, yx.2, b.ols, b.ma, b.rma, RMA, ratio, nperm, epsilon, ...)
 
 ### One-tailed permutation tests of OLS, MA, and RMA regression slopes.
 ### The SMA slope cannot be tested for significance.
@@ -512,7 +513,8 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
     ## Permutation test begins
     n <- length(y)
     for(i in 1:nperm) {
-        y.per <- y[permuted.index2(n, control = control)]
+        ## Permutation, could use permuted.index2
+        y.per <- y[sample(n)]
         ## OLS regression
         temp <- lm(y.per ~ x)                # lm {stats}  Fitting linear model
         b.ols.per <- summary(temp)$coefficients[2,1]
@@ -542,7 +544,8 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
 
         ## RMA regression
         if(RMA) {
-            y.2.per <- y.2[permuted.index2(n, control = control)]
+            ## Permutation: could use permuted.index2
+            y.2.per <- y.2[sample(n)]
             r.per <- cor(y.2.per,x.2)
             rsq.per <- r.per^2
             temp.ranged <- lm(y.2.per ~ x.2)  # lm {stats}  Fitting linear model

@@ -19,8 +19,7 @@ major axis (MA), standard major axis (SMA), and ranged major axis
 variable. }
 
 \usage{
-lmodel2(formula, data = NULL, range.y=NULL, range.x=NULL, nperm=0,
-   control = permControl(nperm=nperm))
+lmodel2(formula, data = NULL, range.y=NULL, range.x=NULL, nperm=0)
 }
 
 \arguments{
@@ -39,8 +38,6 @@ lmodel2(formula, data = NULL, range.y=NULL, range.x=NULL, nperm=0,
   variable)  }
   \item{nperm}{ Number of permutations for the tests. If \code{nperm =
    0}, tests will not be computed. } 
-   \item{control}{Permutation control item for
-  \code{\link[vegan]{permuted.index2}}.} 
 } 
 
 \details{

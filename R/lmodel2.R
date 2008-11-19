@@ -198,7 +198,8 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
     
     ## Permutation tests
     if((nperm > 0) & (rsquare > epsilon)) {
-        require(vegan) || stop("requires package 'vegan'")
+        ## requires vegan if permuted.index2 used in permutest
+        ## require(vegan) || stop("requires package 'vegan'")
         res8 <- permutest.lmodel2(yx, yx.2, b.ols, b.ma, b.rma/ratio,
                           RMA, ratio, nperm, epsilon)
     }
@@ -303,7 +304,9 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
 {
 ## Print the regression results
     cat("\nModel II regression\n\n")
-    writeLines(strwrap(pasteCall(x$call)))
+    writeLines(strwrap(paste("Call:",
+                             paste(deparse(x$call), collapse=" "),
+                             "\n")))
     cat("\n")
     cat("n =",x$n,"  r =",x$r,"  r-square =",x$rsquare,'\n')
     cat("Parametric P-values:   2-tailed =",x$P.param,

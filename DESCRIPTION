@@ -5,7 +5,6 @@ Version: 1.6-1
 Date: 2008-11-19
 Author: Pierre Legendre
 Maintainer: Jari Oksanen <jari.oksanen@oulu.fi>
-Depends: vegan
 Description: Computes model II simple linear regression using ordinary
  least squares (OLS), major axis (MA), standard major axis (SMA), and
  ranged major axis (RMA).

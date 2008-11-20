@@ -315,9 +315,9 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
         x$theta," degrees",sep="",'\n')
     ##if((x$nperm > 0) || (x$info.slope == 1) || (x$info.CI == 1)) cat("")
     if(x$info.slope == 1)
-        cat("MA, SMA, RMA slopes = 555.5555 when the correlation is zero\n")
+        cat("MA, SMA, RMA slopes = NA when the correlation is zero\n")
     if(x$info.CI == 1)
-        cat("999.9999 or -999.9999 when the slope is infinite (90 deg. angle)\n")   
+        cat("Inf or -Inf when the slope is infinite (90 deg. angle)\n")   
     if(x$nperm > 0) {
         cat("Permutation tests of OLS, MA, RMA slopes: 1-tailed, tail corresponding to sign\n")
         cat("A permutation test of r is equivalent to a permutation test of the OLS slope\n")
@@ -352,8 +352,8 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
    b0 <- ybar - b.ma*xbar
    angle <- atan(b.ma)*180/pi
     } else { 
-        b0 <- 555.5555
-        b.ma <- 555.5555
+        b0 <- NA
+        b.ma <- NA
         angle <- NA
     }
     MA.res <- c(b0, b.ma, angle)
@@ -367,8 +367,8 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
         b0 <- ybar - b.sma*xbar
         angle <- atan(b.sma)*180/pi
     } else { 
-        b0 <- 555.5555
-        b.sma <- 555.5555
+        b0 <- NA
+        b.sma <- NA
         angle <- NA
     }
     SMA.res <- c(b0, b.sma, angle)
@@ -405,13 +405,13 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
                 } else {
                     A <- sqrt(H/(1-H))
                     if((b.ma*A) == -1) {          # angle = -90 deg., b1inf = -infinity
-                        b1inf <- -999.9999
+                        b1inf <- -Inf
                         info.CI <- 1
                     } else {
                         b1inf <- ratio * (b.ma-A) / (1+b.ma*A)
                }
                     if((b.ma*A) == 1) {           # angle = +90 deg., b1sup = +infinity
-                        b1sup <- 999.9999
+                        b1sup <- Inf
                         info.CI <- 1
                     } else {
                         b1sup <- ratio * (b.ma+A) / (1-b.ma*A)

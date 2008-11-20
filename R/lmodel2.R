@@ -313,14 +313,14 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
         "   1-tailed =",x$P.param/2,'\n')
     cat("Angle between the two OLS regression lines = ",
         x$theta," degrees",sep="",'\n')
-    ##if((x$nperm > 0) || (x$info.slope == 1) || (x$info.CI == 1)) cat("")
     if(x$info.slope == 1)
         cat("MA, SMA, RMA slopes = NA when the correlation is zero\n")
     if(x$info.CI == 1)
-        cat("Inf or -Inf when the slope is infinite (90 deg. angle)\n")   
+        cat("Confidence limit of slope = Inf when infinite (90 deg. angle)\n")   
     if(x$nperm > 0) {
-        cat("Permutation tests of OLS, MA, RMA slopes: 1-tailed, tail corresponding to sign\n")
+        cat("\nPermutation tests of OLS, MA, RMA slopes: 1-tailed, tail corresponding to sign\n")
         cat("A permutation test of r is equivalent to a permutation test of the OLS slope\n")
+        cat("P-perm for SMA = NA because it cannot be tested\n")
     }
     if(is.na(x$confidence.intervals[2,2]) ||
        is.na(x$confidence.intervals[3,2])) {
@@ -409,7 +409,7 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
                         info.CI <- 1
                     } else {
                         b1inf <- ratio * (b.ma-A) / (1+b.ma*A)
-               }
+                    }
                     if((b.ma*A) == 1) {           # angle = +90 deg., b1sup = +infinity
                         b1sup <- Inf
                         info.CI <- 1
@@ -517,7 +517,7 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
     n <- length(y)
     for(i in 1:nperm) {
         ## Permutation, could use permuted.index2
-        idx <- sample(n)
+        order = sample(n)
         y.per <- y[idx]
         ## OLS regression
         temp <- lm(y.per ~ x)                # lm {stats}  Fitting linear model

@@ -517,7 +517,8 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
     n <- length(y)
     for(i in 1:nperm) {
         ## Permutation, could use permuted.index2
-        y.per <- y[sample(n)]
+        idx <- sample(n)
+        y.per <- y[idx]
         ## OLS regression
         temp <- lm(y.per ~ x)                # lm {stats}  Fitting linear model
         b.ols.per <- summary(temp)$coefficients[2,1]
@@ -548,7 +549,7 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
         ## RMA regression
         if(RMA) {
             ## Permutation: could use permuted.index2
-            y.2.per <- y.2[sample(n)]
+            y.2.per <- y.2[idx]
             r.per <- cor(y.2.per,x.2)
             rsq.per <- r.per^2
             temp.ranged <- lm(y.2.per ~ x.2)  # lm {stats}  Fitting linear model

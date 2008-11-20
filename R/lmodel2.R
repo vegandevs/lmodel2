@@ -517,7 +517,7 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
     n <- length(y)
     for(i in 1:nperm) {
         ## Permutation, could use permuted.index2
-        order = sample(n)
+        idx <- sample(n)
         y.per <- y[idx]
         ## OLS regression
         temp <- lm(y.per ~ x)                # lm {stats}  Fitting linear model

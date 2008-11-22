@@ -320,7 +320,7 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
     if(x$nperm > 0) {
         cat("\nPermutation tests of OLS, MA, RMA slopes: 1-tailed, tail corresponding to sign\n")
         cat("A permutation test of r is equivalent to a permutation test of the OLS slope\n")
-        cat("P-perm for SMA = NA because it cannot be tested\n")
+        cat("P-perm for SMA = NA because the SMA slope cannot be tested\n")
     }
     if(is.na(x$confidence.intervals[2,2]) ||
        is.na(x$confidence.intervals[3,2])) {

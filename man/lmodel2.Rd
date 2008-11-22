@@ -46,7 +46,9 @@ lmodel2(formula, data = NULL, range.y=NULL, range.x=NULL, nperm=0)
   researcher. Model I regression using least squares underestimates
   the slope of the linear relationship between the variables when they
   both contain error. Ordinary least squares (OLS) is, however, appropriate 
-  in some cases as a model II regression model; see the \dQuote{Model II User's guide, 2008}.
+  in some cases as a model II regression model; see the \dQuote{Model
+  II User's guide, 2008} which you can read using command
+  \code{vignette("mod2user")}. 
 
   The model II regression methods of ordinary least squares (OLS),
   major axis (MA), standard major axis (SMA), and ranged major axis
@@ -54,7 +56,8 @@ lmodel2(formula, data = NULL, range.y=NULL, range.x=NULL, nperm=0)
   10.3.2). OLS, MA, and SMA are also described in Sokal and Rohlf
   (1995). The PDF document \dQuote{Model II User's guide, 2008}
   provided with this function contains a tutorial for model II
-  regression.  
+  regression, and can be read using with command
+  \code{vignette("mod2user")}. 
   
   The \code{plot} function plots the data points together with one of the
   regression lines, specified by \code{method="OLS"}, \code{method="MA"} (default),
@@ -106,7 +109,9 @@ edition. W. H. Freeman, New York.
 }
 
 \seealso{ 
-A tutorial (file \dQuote{Model II User's guide, 2008}) is provided with this function.
+A tutorial (file \dQuote{Model II User's guide, 2008}) is provided
+with this function, and can be read within \R session using command
+\code{vignette("mod2user", package="lmodel2")}. 
 }
 
 \author{ Pierre Legendre, Departement de Sciences Biologiques, Universite de Montreal }

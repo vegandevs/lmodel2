@@ -47,16 +47,16 @@ lmodel2(formula, data = NULL, range.y=NULL, range.x=NULL, nperm=0)
   the slope of the linear relationship between the variables when they
   both contain error. Ordinary least squares (OLS) is, however, appropriate 
   in some cases as a model II regression model; see the \dQuote{Model
-  II User's guide, 2008} which you can read using command
+  II User's guide, R edition} which you can read using command
   \code{vignette("mod2user")}. 
 
   The model II regression methods of ordinary least squares (OLS),
   major axis (MA), standard major axis (SMA), and ranged major axis
   (RMA) are described in Legendre and Legendre (1998, Section
   10.3.2). OLS, MA, and SMA are also described in Sokal and Rohlf
-  (1995). The PDF document \dQuote{Model II User's guide, 2008}
+  (1995). The PDF document \dQuote{Model II User's guide, R edition}
   provided with this function contains a tutorial for model II
-  regression, and can be read using with command
+  regression, and can be read with command
   \code{vignette("mod2user")}. 
   
   The \code{plot} function plots the data points together with one of the
@@ -109,7 +109,7 @@ edition. W. H. Freeman, New York.
 }
 
 \seealso{ 
-A tutorial (file \dQuote{Model II User's guide, 2008}) is provided
+A tutorial (file \dQuote{Model II User's guide, R edition}) is provided
 with this function, and can be read within \R session using command
 \code{vignette("mod2user", package="lmodel2")}. 
 }
@@ -134,6 +134,7 @@ op <- par(mfrow = c(1,2))
 plot(Ex2.res, "SMA")
 plot(Ex2.res, "RMA")
 par(op)
+
 ## Example 3 (cabezon spawning)
 op <- par(mfrow = c(1,2))
 data(mod2ex3)
@@ -142,6 +143,7 @@ Ex3.res
 plot(Ex3.res, "SMA")
 plot(Ex3.res, "RMA")
 par(op)
+
 ## Example 4 (highly correlated random variables)
 op <- par(mfrow=c(1,2))
 data(mod2ex4)

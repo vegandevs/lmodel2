@@ -118,7 +118,7 @@ with this function, and can be read within \R session using command
 
 \examples{
 ## The example data files are described in more detail in the
-## \dQuote{Model II User's guide, 2008} tutorial. 
+## \dQuote{Model II User's guide, R edition} tutorial. 
 
 ## Example 1 (surgical unit data)
 data(mod2ex1)

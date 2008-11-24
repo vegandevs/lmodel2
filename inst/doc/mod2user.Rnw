@@ -21,8 +21,8 @@
 \author{Pierre Legendre}
 
 \address{D{\'e}partement de sciences biologiques, Universit{\'e} de
-Montr{\'e}al, C.P. 6128, succursale Centre-ville, Montreal,
-Quebec H3C 3J7, Canada}
+Montr{\'e}al, C.P. 6128, succursale Centre-ville, Montr{\'e}al,
+Qu{\'e}bec H3C 3J7, Canada}
 \email{Pierre.Legendre@umontreal.ca}
 
 \date{$ $Id$ $}
@@ -745,6 +745,6 @@ example of the phenomenon of inversion of the confidence limits
 described in Fig. \ref{fig:rma}.
 
 \bibliographystyle{plainnat}
-\bibliography{vegan}
+\bibliography{lmodel2}
 
 \end{document}

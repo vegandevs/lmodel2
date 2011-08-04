@@ -1,0 +1,7 @@
+export(lmodel2)
+import(stats)
+importFrom(graphics, plot, lines)
+## S3 methods
+S3method(print, lmodel2)
+S3method(plot, lmodel2)
+S3method(lines, lmodel2)

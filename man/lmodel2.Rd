@@ -3,11 +3,6 @@
 \alias{lmodel2}
 \alias{plot.lmodel2}
 \alias{lines.lmodel2}
-\alias{print.lmodel2}
-\alias{MA.reg}
-\alias{SMA.reg}
-\alias{CLma}
-\alias{CLsma}
 \alias{permutest.lmodel2}
 
 \title{Model II regression}

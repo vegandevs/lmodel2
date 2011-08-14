@@ -2,7 +2,7 @@ Package: lmodel2
 Type: Package
 Title: Model II Regression
 Version: 1.7-0
-Date: 2011-08-04
+Date: 2011-08-15
 Author: Pierre Legendre
 Maintainer: Jari Oksanen <jari.oksanen@oulu.fi>
 Description: Computes model II simple linear regression using ordinary

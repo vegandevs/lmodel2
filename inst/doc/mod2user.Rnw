@@ -475,7 +475,7 @@ Ex1.res
 \begin{SCfigure}
 <<fig=true,echo=false,results=hide>>=
 plot(Ex1.res, centro = TRUE, xlab="log(observed survival time", ylab="Forecasted")
-abline(diff(mean(mod2ex1)), 1, lty=2)
+abline(diff(colMeans(mod2ex1)), 1, lty=2)
 legend("topleft", c("MA regression", "Confidence limits", "45 degree line"), col=c("red", "grey", "black"), lty=c(1,1,2))
 @
 \caption{Scatter diagram of the 2.5 Example 1 data showing the major

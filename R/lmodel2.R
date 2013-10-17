@@ -1,5 +1,5 @@
 `lmodel2` <-
-function(formula, data = NULL, range.y = NULL, range.x = NULL,
+    function(formula, data = NULL, range.y = NULL, range.x = NULL,
              nperm = 0)
 ###
 ### Bivariate model II regression.
@@ -209,10 +209,10 @@ function(formula, data = NULL, range.y = NULL, range.x = NULL,
         H <- NA
     reg.res <- data.frame(met,res1,res2,res3,res8)
     CI.res <- data.frame(met,res4,res5,res6,res7)
-    colnames(reg.res) <- c("Method","Intercept","    Slope",
-                           " Angle (degrees)"," P-perm (1-tailed)")
-    colnames(CI.res) <- c("Method"," 2.5%-Intercept","97.5%-Intercept",
-                          " 2.5%-Slope","97.5%-Slope")
+    colnames(reg.res) <- c("Method","Intercept","Slope",
+                           "Angle (degrees)","P-perm (1-tailed)")
+    colnames(CI.res) <- c("Method","2.5%-Intercept","97.5%-Intercept",
+                          "2.5%-Slope","97.5%-Slope")
 
     out <- list(y=y, x=x, regression.results=reg.res,
                 confidence.intervals=CI.res,

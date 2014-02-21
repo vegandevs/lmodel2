@@ -5,6 +5,7 @@ Version: 1.7-2
 Date: 2013-10-17
 Author: Pierre Legendre
 Maintainer: Jari Oksanen <jari.oksanen@oulu.fi>
+Depends: R (>= 2.14.0)
 Description: Computes model II simple linear regression using ordinary
  least squares (OLS), major axis (MA), standard major axis (SMA), and
  ranged major axis (RMA).

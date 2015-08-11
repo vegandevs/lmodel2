@@ -3,7 +3,8 @@ export(lmodel2)
 ## Make visible
 export(plot.lmodel2, lines.lmodel2)
 ## import for S3
-importFrom(graphics, plot, lines)
+importFrom("graphics", "plot", "lines", "abline", "points", "title")
+importFrom("stats", "confint", "cor", "cov", "lm", "qt", "var")
 ## S3 methods
 S3method(print, lmodel2)
 S3method(plot, lmodel2)

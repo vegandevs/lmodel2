@@ -1,8 +1,7 @@
 % -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
 %\VignetteIndexEntry{Model II Regression User Guide}
 \documentclass[a4paper,10pt,reqno]{amsart}
-\usepackage{ucs}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[authoryear,round]{natbib}
 \usepackage{hyperref}
@@ -367,7 +366,7 @@ an underestimation of these confidence intervals.
 
 \begin{figure}
   \centering
-\resizebox{\linewidth}{!}{  
+\resizebox{\linewidth}{!}{
   \begin{tikzpicture}
     \draw[->, very thick] (0,0) -- (6,0);
     \draw[<-, very thick]  (3,3) -- (3,-3);

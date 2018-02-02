@@ -231,7 +231,7 @@ Check scatter diagram: no outlier & Yes\\
 \section{Ranged major axis regression}
 
 Ranged major axis regression (RMA) is described in
-\citep[511--512]{Legendre-Legendre98}. It is computed as follows:
+\citep[551]{Legendre-Legendre98}. It is computed as follows:
 
 \begin{enumerate}
 \item Transform the $y$ and $x$ variables into $y'$ and $x'$,
@@ -339,7 +339,7 @@ following results:
   statistics. In OLS simple linear regression, a permutation test of
   significance based on the $r$ statistic is equivalent to a
   permutation test based on the pivotal $t$-statistic associated with
-  $b_{OLS}$ \citep[21]{Legendre-Legendre98}. On the other hand, across
+  $b_{OLS}$ \citep[p.~24]{Legendre-Legendre98}. On the other hand, across
   the permutations, the slope estimate ($b_{OLS}$) differs from $r$ by a
   constant ($s_y/s_x$) since $b_{OLS} = r_{xy} s_y/s_x$, so that $b_{OLS}$ and
   $r$ are equivalent statistics for permutation testing. As a

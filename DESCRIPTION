@@ -1,8 +1,8 @@
 Package: lmodel2
 Type: Package
 Title: Model II Regression
-Version: 1.7-3
-Date: 2018-02-05
+Version: 1.7-4
+Date: 2018-02-06
 Author: Pierre Legendre
 Maintainer: Jari Oksanen <jari.oksanen@oulu.fi>
 Depends: R (>= 2.14.0)

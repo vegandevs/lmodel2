@@ -24,7 +24,7 @@ Montr{\'e}al, C.P. 6128, succursale Centre-ville, Montr{\'e}al,
 Qu{\'e}bec H3C 3J7, Canada}
 \email{Pierre.Legendre@umontreal.ca}
 
-\date{$ $Id$ $}
+\date{\Sexpr{packageDate('lmodel2')} (version \Sexpr{packageVersion('lmodel2')})}
 
 \begin{document}
 

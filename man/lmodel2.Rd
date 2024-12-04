@@ -52,7 +52,7 @@ lmodel2(formula, data = NULL, range.y=NULL, range.x=NULL, nperm=0)
 
   The model II regression methods of ordinary least squares (OLS),
   major axis (MA), standard major axis (SMA), and ranged major axis
-  (RMA) are described in Legendre and Legendre (1998, Section
+  (RMA) are described in Legendre and Legendre (2012, Section
   10.3.2). OLS, MA, and SMA are also described in Sokal and Rohlf
   (1995). The PDF document \dQuote{Model II User's guide, R edition}
   provided with this function contains a tutorial for model II
@@ -100,7 +100,7 @@ lmodel2(formula, data = NULL, range.y=NULL, range.x=NULL, nperm=0)
 } 
 
 \references{ 
-Legendre, P. and L. Legendre. 1998. Numerical ecology, 2nd English
+Legendre, P. and L. Legendre. 2012. Numerical ecology, 3rd English
 edition. Elsevier Science BV, Amsterdam. 
 
 Sokal, R. R. and F. J. Rohlf. 1995. Biometry -- The principles and
